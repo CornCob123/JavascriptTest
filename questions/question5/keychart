@@ -1,0 +1,22 @@
+# templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "spa.fullname" . }}
+spec:
+  template:
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          env: {{- include "spa.extraEnvVars" . | nindent 12 }}
+          ports:
+            - containerPort: {{ .Values.service.port }}
+
+# templates/_helpers.tpl
+{{- define "spa.extraEnvVars" -}}
+{{- range $key, $value := .Values.extraEnvVars }}
+- name: {{ $key }}
+  value: {{ $value | quote }}
+{{- end }}
+{{- end -}}

@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "{{ .Release.Name }}-cache-bust"
+  annotations:
+    "helm.sh/hook": post-upgrade
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      containers:
+      - name: cache-buster
+        image: curlimages/curl
+        command: ["curl", "-X", "POST", "https://api.cloudflare.com/client/v4/zones/{{ .Values.cloudflare.zoneId }}/purge_cache"]
+        env:
+        - name: CLOUDFLARE_AUTH_KEY
+          valueFrom:
+            secretKeyRef:
+              name: cloudflare-secrets
+              key: apiKey
+      restartPolicy: Never
