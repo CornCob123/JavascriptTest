@@ -7,10 +7,10 @@
 Answered Questions in questions folder
 
 
-Ui was rushed
-
-
 Steps to run:
+
 git clone 
+
 npm install
+
 npm run start
