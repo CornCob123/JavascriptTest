@@ -1,0 +1,47 @@
+// child.component.ts
+import { Component, Input, ChangeDetectionStrategy, 
+         OnChanges, SimpleChanges, DoCheck } from '@angular/core';
+
+@Component({
+  selector: 'app-child',
+  template: `
+    <h3>User: {{ user.name }}</h3>
+    <p>Change detection runs: {{ changeDetectionRuns }}</p>
+    <p>ngOnChanges calls: {{ ngOnChangesCalls }}</p>
+    <p>ngDoCheck calls: {{ ngDoCheckCalls }}</p>
+    
+    <ul>
+      <li *ngFor="let item of items; trackBy: trackByFn">{{ item }}</li>
+    </ul>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ChildComponent implements OnChanges, DoCheck {
+  @Input() user: any;
+  @Input() items: string[] = [];
+  @Input() counter: number;
+
+  changeDetectionRuns = 0;
+  ngOnChangesCalls = 0;
+  ngDoCheckCalls = 0;
+
+  // TrackBy function for *ngFor optimization
+  trackByFn(index: number, item: string): number {
+    return index;
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    this.ngOnChangesCalls++;
+    console.log('Changes detected:', changes);
+  }
+
+  ngDoCheck() {
+    this.ngDoCheckCalls++;
+    console.log('Change detector ran');
+  }
+
+  // This gets called on every change detection cycle
+  ngAfterViewChecked() {
+    this.changeDetectionRuns++;
+  }
+}

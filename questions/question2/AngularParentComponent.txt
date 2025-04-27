@@ -1,0 +1,31 @@
+// parent.component.ts
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-parent',
+  template: `
+    <button (click)="changeUser()">Change User</button>
+    <button (click)="addItem()">Add Item</button>
+    <app-child 
+      [user]="currentUser" 
+      [items]="items"
+      [counter]="counter">
+    </app-child>
+  `,
+})
+export class ParentComponent {
+  currentUser = { name: 'John', id: 1 };
+  items = ['Item 1', 'Item 2'];
+  counter = 0;
+
+  changeUser() {
+    // Immutable update - will trigger ngOnChanges
+    this.currentUser = { ...this.currentUser, name: 'Jane' };
+  }
+
+  addItem() {
+    // Mutable update - won't trigger OnPush detection
+    this.items.push(`Item ${this.items.length + 1}`);
+    this.counter++;
+  }
+}

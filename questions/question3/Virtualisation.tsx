@@ -1,4 +1,5 @@
 import React from 'react';
+import {List } from 'react-virtualized';
 const rowCount = 5000;
 const listHeight = 400;
 const rowHeight = 50;
@@ -26,3 +27,23 @@ export function renderRow({index, key, style}) {
       </div>
     );
   }
+
+
+export function virtulisation(){
+  return(
+    <>
+        <h2>Question 3.2</h2>
+        <div className="App">
+          <div className="list">
+            <List
+              width={rowWidth}
+              height={listHeight}
+              rowHeight={rowHeight}
+              rowRenderer={renderRow}
+              rowCount={list.length}
+              overscanRowCount={3} />
+          </div>
+        </div>
+    </>
+  )
+}
