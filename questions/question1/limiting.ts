@@ -12,13 +12,16 @@ export function createRateLimitedScheduler(fn: Function , limit: number , delay:
         console.log("Blocked too many attempts")
         return "Blocked too many attempts"
       }
+      else{
+        setTimeout(fn, delay);    // if not call the function
+      }
 
     }
     else{
           executionTimestamps = []      // reset list and counter after 1 sec
           counter = 0
     }
-    setTimeout(fn, delay);
+   
     return counter;
 
   }
